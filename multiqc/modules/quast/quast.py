@@ -151,7 +151,8 @@ class MultiqcModule(BaseMultiqcModule):
         """Write some more statistics about the assemblies in a table."""
         headers = OrderedDict()
 
-        # This is likely overkill. But will figure that out.
+        # TODO This is likely overkill. But will figure that out.
+        # Testing with 064 QUAST data.
         for n in range(1, 100):
             length = f"N{n}"
             headers[length] = {
