@@ -151,59 +151,81 @@ class MultiqcModule(BaseMultiqcModule):
         """Write some more statistics about the assemblies in a table."""
         headers = OrderedDict()
 
-        headers["N50"] = {
-            "title": "N50 ({})".format(self.contig_length_suffix),
-            "description": "N50 is the contig length such that using longer or equal length contigs produces half (50%) of the bases of the assembly.",
-            "min": 0,
-            "suffix": self.contig_length_suffix,
-            "scale": "RdYlGn",
-            "modify": lambda x: x * self.contig_length_multiplier,
-        }
+        # This is likely overkill. But will figure that out.
+        for n in range(1, 100):
+            length = f"N{n}"
+            headers[length] = {
+                "title": "{} ({})".format(length,self.contig_length_suffix),
+                "description": f"{length} is the contig length such that using longer or equal length contigs produces half ({n}%) of the bases of the assembly.",
+                "min": 0,
+                "suffix": self.contig_length_suffix,
+                "scale": "RdYlGn",
+                "modify": lambda x: x * self.contig_length_multiplier,
+            }
 
-        headers["N75"] = {
-            "title": "N75 ({})".format(self.contig_length_suffix),
-            "description": "N75 is the contig length such that using longer or equal length contigs produces 75% of the bases of the assembly",
-            "min": 0,
-            "suffix": self.contig_length_suffix,
-            "scale": "RdYlGn",
-            "modify": lambda x: x * self.contig_length_multiplier,
-        }
+        for n in range(1, 100):
+            contig = f"L{n}"
+            headers[contig] = {
+                "title": "{} ({})".format(contig, self.total_number_contigs_suffix) if self.total_number_contigs_suffix else contig,
+                "description": f"{contig} is the number of contigs larger than N{n}, i.e. the minimum number of contigs comprising {n}% of the total assembly length.",
+                "min": 0,
+                "suffix": self.total_number_contigs_suffix,
+                "scale": "GnYlRd",
+                "modify": lambda x: x * self.total_number_contigs_multiplier,
+            }
+        # headers["N50"] = {
+        #     "title": "N50 ({})".format(self.contig_length_suffix),
+        #     "description": "N50 is the contig length such that using longer or equal length contigs produces half (50%) of the bases of the assembly.",
+        #     "min": 0,
+        #     "suffix": self.contig_length_suffix,
+        #     "scale": "RdYlGn",
+        #     "modify": lambda x: x * self.contig_length_multiplier,
+        # }
 
-        headers["N90"] = {
-            "title": "N90 ({})".format(self.contig_length_suffix),
-            "description": "N90 is the contig length such that using longer or equal length contigs produces 90% of the bases of the assembly",
-            "min": 0,
-            "suffix": self.contig_length_suffix,
-            "scale": "RdYlGn",
-            "modify": lambda x: x * self.contig_length_multiplier,
-        }
+        # headers["N75"] = {
+        #     "title": "N75 ({})".format(self.contig_length_suffix),
+        #     "description": "N75 is the contig length such that using longer or equal length contigs produces 75% of the bases of the assembly",
+        #     "min": 0,
+        #     "suffix": self.contig_length_suffix,
+        #     "scale": "RdYlGn",
+        #     "modify": lambda x: x * self.contig_length_multiplier,
+        # }
 
-        headers["L50"] = {
-            "title": "L50 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L50",
-            "description": "L50 is the number of contigs larger than N50, i.e. the minimum number of contigs comprising 50% of the total assembly length.",
-            "min": 0,
-            "suffix": self.total_number_contigs_suffix,
-            "scale": "GnYlRd",
-            "modify": lambda x: x * self.total_number_contigs_multiplier,
-        }
+        # headers["N90"] = {
+        #     "title": "N90 ({})".format(self.contig_length_suffix),
+        #     "description": "N90 is the contig length such that using longer or equal length contigs produces 90% of the bases of the assembly",
+        #     "min": 0,
+        #     "suffix": self.contig_length_suffix,
+        #     "scale": "RdYlGn",
+        #     "modify": lambda x: x * self.contig_length_multiplier,
+        # }
 
-        headers["L75"] = {
-            "title": "L75 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L75",
-            "description": "L75 is the number of contigs larger than N75, i.e. the minimum number of contigs comprising 75% of the total assembly length.",
-            "min": 0,
-            "suffix": self.total_number_contigs_suffix,
-            "scale": "GnYlRd",
-            "modify": lambda x: x * self.total_number_contigs_multiplier,
-        }
+        # headers["L50"] = {
+        #     "title": "L50 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L50",
+        #     "description": "L50 is the number of contigs larger than N50, i.e. the minimum number of contigs comprising 50% of the total assembly length.",
+        #     "min": 0,
+        #     "suffix": self.total_number_contigs_suffix,
+        #     "scale": "GnYlRd",
+        #     "modify": lambda x: x * self.total_number_contigs_multiplier,
+        # }
 
-        headers["L90"] = {
-            "title": "L90 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L90",
-            "description": "L90 is the number of contigs larger than N75, i.e. the minimum number of contigs comprising 90% of the total assembly length.",
-            "min": 0,
-            "suffix": self.total_number_contigs_suffix,
-            "scale": "GnYlRd",
-            "modify": lambda x: x * self.total_number_contigs_multiplier,
-        }
+        # headers["L75"] = {
+        #     "title": "L75 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L75",
+        #     "description": "L75 is the number of contigs larger than N75, i.e. the minimum number of contigs comprising 75% of the total assembly length.",
+        #     "min": 0,
+        #     "suffix": self.total_number_contigs_suffix,
+        #     "scale": "GnYlRd",
+        #     "modify": lambda x: x * self.total_number_contigs_multiplier,
+        # }
+
+        # headers["L90"] = {
+        #     "title": "L90 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L90",
+        #     "description": "L90 is the number of contigs larger than N75, i.e. the minimum number of contigs comprising 90% of the total assembly length.",
+        #     "min": 0,
+        #     "suffix": self.total_number_contigs_suffix,
+        #     "scale": "GnYlRd",
+        #     "modify": lambda x: x * self.total_number_contigs_multiplier,
+        # }
 
         headers["# contigs"] = {
             "title": "Total contigs ({})".format(self.contig_length_suffix),
