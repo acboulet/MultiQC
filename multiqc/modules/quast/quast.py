@@ -169,6 +169,15 @@ class MultiqcModule(BaseMultiqcModule):
             "modify": lambda x: x * self.contig_length_multiplier,
         }
 
+        headers["N90"] = {
+            "title": "N90 ({})".format(self.contig_length_suffix),
+            "description": "N90 is the contig length such that using longer or equal length contigs produces 90% of the bases of the assembly",
+            "min": 0,
+            "suffix": self.contig_length_suffix,
+            "scale": "RdYlGn",
+            "modify": lambda x: x * self.contig_length_multiplier,
+        }
+
         headers["L50"] = {
             "title": "L50 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L50",
             "description": "L50 is the number of contigs larger than N50, i.e. the minimum number of contigs comprising 50% of the total assembly length.",
@@ -186,6 +195,25 @@ class MultiqcModule(BaseMultiqcModule):
             "scale": "GnYlRd",
             "modify": lambda x: x * self.total_number_contigs_multiplier,
         }
+
+        headers["L90"] = {
+            "title": "L90 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L90",
+            "description": "L90 is the number of contigs larger than N75, i.e. the minimum number of contigs comprising 90% of the total assembly length.",
+            "min": 0,
+            "suffix": self.total_number_contigs_suffix,
+            "scale": "GnYlRd",
+            "modify": lambda x: x * self.total_number_contigs_multiplier,
+        }
+
+        headers["# contigs"] = {
+            "title": "Total contigs ({})".format(self.contig_length_suffix),
+            "description": "The total number of contigs in the assembly",
+            "min": 0,
+            "suffix": self.total_number_contigs_suffix,
+            "scale": "YlGn",
+            "modify": lambda x: x * self.total_number_contigs_multiplier,
+        }
+        
         headers["Largest contig"] = {
             "title": "Largest contig ({})".format(self.contig_length_suffix),
             "description": "The size of the largest contig of the assembly",
