@@ -229,7 +229,7 @@ class MultiqcModule(BaseMultiqcModule):
         # }
 
         headers["# contigs"] = {
-            "title": "Total contigs ({})".format(self.contig_length_suffix),
+            "title": "Total contigs ({})".format(self.total_number_contigs_suffix),
             "description": "The total number of contigs in the assembly",
             "min": 0,
             "suffix": self.total_number_contigs_suffix,
