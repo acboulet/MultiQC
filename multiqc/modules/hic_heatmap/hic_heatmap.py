@@ -30,30 +30,50 @@ class MultiqcModule(BaseMultiqcModule):
         for f in self.find_log_files("hic_heatmap"):
             self.parse_matrix_file(f)
 
-        hmdata = [
-                [0.9, 0.87, 0.73, 0.6, 0.2, 0.3],
-                [0.87, 1, 0.7, 0.6, 0.9, 0.3],
-                [0.73, 0.8, 1, 0.6, 0.9, 0.3],
-                [0.6, 0.8, 0.7, 1, 0.9, 0.3],
-                [0.2, 0.8, 0.7, 0.6, 1, 0.3],
-                [0.3, 0.8, 0.7, 0.6, 0.9, 1],
-            ]
-        names = [ 'one', 'two', 'three', 'four', 'five', 'six' ]
+        if len(self.hic_data) == 0:
+            raise UserWarning
 
-        self.add_section(
-            name="Tester",
-            anchor="HiC",
-            description="",
-            helptext="",
-            plot=heatmap.plot(hmdata, names)
+        log.info("Found {} reports".format(len(self.hic_data)))
 
-        )
+        # Write parsed report data to a file
+        self.write_data_file(self.hic_data, "multiqc_hic_heatmap")
+
+        # self.add_section(
+        #     name="Tester",
+        #     anchor="HiC",
+        #     description="",
+        #     helptext="",
+        #     plot=heatmap.plot(hmdata, names)
+
+        # )
 
     def parse_matrix_file(self, f):
         """
         Convert matrix file into a 2-D nested list for heatmap.
         """
-  
+        s_name = f["s_name"]
+
+        self.hic_data[s_name] = [[]]
+        lines = f["f"].splitlines()
+        for l in lines:
+            l = l.strip()split("\t")
+
+            # Each line should contain 
+            x = int(l[0])
+            y = int(l[1])
+            value = float(l[2])
+
+            # TODO create a max check of 1000?
+            # Check if a new row is needed
+            if len(self.hic_data[s_name]) == x:
+                self.hic_data[s_name][x - 1].append(value)
+            else:
+                self.hic_data[s_name].append([])
+                self.hic_data[s_name][x - 1].append(value)
+            
+                
+
+
 
     hm_html = heatmap.plot(hmdata, names)
 
