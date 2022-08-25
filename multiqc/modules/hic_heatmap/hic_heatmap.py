@@ -18,8 +18,8 @@ class MultiqcModule(BaseMultiqcModule):
     def __init__(self):
         # Initialise the parent object
         super(MultiqcModule, self).__init__(
-          name='My Module',
-          anchor='mymod',
+          name='hic_heatmap',
+          anchor='hic_heatmap',
           href="http://www.awesome_bioinfo.com/my_module",
           info="is an example analysis module used for writing documentation.",
           doi="01.2345/journal/abc123"

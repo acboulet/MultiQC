@@ -4,7 +4,6 @@
 
 hic_heatmap:
   fn: "*.matrix"
-
 adapterRemoval:
   fn: "*.settings"
   contents: "AdapterRemoval"

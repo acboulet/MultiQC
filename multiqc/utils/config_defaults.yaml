@@ -756,3 +756,8 @@ module_order:
   - whatshap:
       module_tag:
         - DNA
+
+  # Custom DMA
+  - hic_heatmap:
+      module_tag:
+        - DNA
