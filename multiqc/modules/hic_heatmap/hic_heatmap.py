@@ -1,6 +1,18 @@
-from multiqc.modules.base_module import BaseMultiqcModule
-from multiqc.plots import heatmap
+#!/usr/bin/env python
+
+""" MultiQC module to parse output from DMA HiCPro matrix files """
+
+from __future__ import print_function
+from collections import OrderedDict
 import logging
+import re
+
+from multiqc import config
+from multiqc.plots import heatmap
+from multiqc.modules.base_module import BaseMultiqcModule
+
+# Initialize logger
+log = logging.getLogger(__name__)
 
 class MultiqcModule(BaseMultiqcModule):
     def __init__(self):
@@ -12,6 +24,11 @@ class MultiqcModule(BaseMultiqcModule):
           info="is an example analysis module used for writing documentation.",
           doi="01.2345/journal/abc123"
         )
+
+        # Find all matrix files, and extract data
+        self.hic_data = dict()
+        for f in self.find_log_files("hic_heatmap"):
+            self.parse_matrix_file(f)
 
         hmdata = [
                 [0.9, 0.87, 0.73, 0.6, 0.2, 0.3],
@@ -31,7 +48,13 @@ class MultiqcModule(BaseMultiqcModule):
             plot=heatmap.plot(hmdata, names)
 
         )
+
+    def parse_matrix_file(self, f):
+        """
+        Convert matrix file into a 2-D nested list for heatmap.
+        """
   
+
     hm_html = heatmap.plot(hmdata, names)
 
 
