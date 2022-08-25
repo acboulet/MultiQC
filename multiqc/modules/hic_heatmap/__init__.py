@@ -1,2 +1,2 @@
 from __future__ import absolute_import
-from .modname import MultiqcModule
+from .hic_heatmap import MultiqcModule

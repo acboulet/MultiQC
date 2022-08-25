@@ -25,6 +25,8 @@ class MultiqcModule(BaseMultiqcModule):
           doi="01.2345/journal/abc123"
         )
 
+        print("did I hit here?")
+
         # Find all matrix files, and extract data
         self.hic_data = dict()
         for f in self.find_log_files("hic_heatmap"):
