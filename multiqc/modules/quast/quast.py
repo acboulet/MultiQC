@@ -31,13 +31,13 @@ class MultiqcModule(BaseMultiqcModule):
         qconfig = getattr(config, "quast_config", {})
 
         self.contig_length_multiplier = qconfig.get("contig_length_multiplier", 0.001)
-        self.contig_length_suffix = qconfig.get("contig_length_suffix", "Kbp")
+        self.contig_length_suffix = qconfig.get("contig_length_suffix", " Kbp")
 
         self.total_length_multiplier = qconfig.get("total_length_multiplier", 0.000001)
-        self.total_length_suffix = qconfig.get("total_length_suffix", "Mbp")
+        self.total_length_suffix = qconfig.get("total_length_suffix", " Mbp")
 
         self.total_number_contigs_multiplier = qconfig.get("total_number_contigs_multiplier", 0.001)
-        self.total_number_contigs_suffix = qconfig.get("total_number_contigs_suffix", "K")
+        self.total_number_contigs_suffix = qconfig.get("total_number_contigs_suffix", " K")
 
         # Find and load any QUAST reports
         self.quast_data = dict()
@@ -173,6 +173,7 @@ class MultiqcModule(BaseMultiqcModule):
                 "suffix": self.total_number_contigs_suffix,
                 "scale": "GnYlRd",
                 "modify": lambda x: x * self.total_number_contigs_multiplier,
+                "format": "{:.0f}",
             }
         # headers["N50"] = {
         #     "title": "N50 ({})".format(self.contig_length_suffix),
@@ -228,13 +229,14 @@ class MultiqcModule(BaseMultiqcModule):
         #     "modify": lambda x: x * self.total_number_contigs_multiplier,
         # }
 
-        headers["# contigs"] = {
+        headers["Total contigs"] = {
             "title": "Total contigs ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "Total contigs",
             "description": "The total number of contigs in the assembly",
             "min": 0,
             "suffix": self.total_number_contigs_suffix,
             "scale": "YlGn",
             "modify": lambda x: x * self.total_number_contigs_multiplier,
+            "format": "{:.0f}",
         }
         
         headers["Largest contig"] = {
