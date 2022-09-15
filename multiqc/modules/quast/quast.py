@@ -229,7 +229,7 @@ class MultiqcModule(BaseMultiqcModule):
         #     "modify": lambda x: x * self.total_number_contigs_multiplier,
         # }
 
-        headers["Total contigs"] = {
+        headers["# contigs"] = {
             "title": "Total contigs ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "Total contigs",
             "description": "The total number of contigs in the assembly",
             "min": 0,
