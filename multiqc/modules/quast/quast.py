@@ -131,10 +131,53 @@ class MultiqcModule(BaseMultiqcModule):
         headers = OrderedDict()
         headers["N50"] = {
             "title": "N50 ({})".format(self.contig_length_suffix),
-            "description": "N50 is the contig length such that using longer or equal length contigs produces half (50%) of the bases of the assembly (kilo base pairs)",
+            "description": "N50 is the contig length such that using longer or equal length contigs produces half (50%) of the bases of the assembly",
             "min": 0,
             "suffix": self.contig_length_suffix,
             "scale": "RdYlGn",
+            "modify": lambda x: x * self.contig_length_multiplier,
+        }
+        headers["L50"] = {
+            "title": "L50 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L50",
+            "description": r"L50 is the number of contigs larger than N50, i.e. the minimum number of contigs comprising 50% of the total assembly length.",
+            "min": 0,
+            "suffix": self.total_number_contigs_suffix,
+            "scale": "Blues",
+            "modify": lambda x: x * self.total_number_contigs_multiplier,
+            "format": "{:.0f}",
+        }
+        headers["N90"] = {
+            "title": "N90 ({})".format(self.contig_length_suffix),
+            "description": "N90 is the contig length such that using longer or equal length contigs produces half (90%) of the bases of the assembly.",
+            "min": 0,
+            "suffix": self.contig_length_suffix,
+            "scale": "RdYlGn",
+            "modify": lambda x: x * self.contig_length_multiplier,
+        }
+        headers["L90"] = {
+            "title": "L90 ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "L90",
+            "description": r"L90 is the number of contigs larger than N50, i.e. the minimum number of contigs comprising 90% of the total assembly length.",
+            "min": 0,
+            "suffix": self.total_number_contigs_suffix,
+            "scale": "Blues",
+            "modify": lambda x: x * self.total_number_contigs_multiplier,
+            "format": "{:.0f}",
+        }
+        headers["# contigs"] = {
+            "title": "Total contigs ({})".format(self.total_number_contigs_suffix) if self.total_number_contigs_suffix else "Total contigs",
+            "description": r"The total number of contigs in the assembly.",
+            "min": 0,
+            "suffix": self.total_number_contigs_suffix,
+            "scale": "Blues",
+            "modify": lambda x: x * self.total_number_contigs_multiplier,
+            "format": "{:.0f}",
+        }
+        headers["Largest contig"] = {
+            "title": "Largest contig ({})".format(self.contig_length_suffix),
+            "description": "The size of the largest contig of the assembly",
+            "min": 0,
+            "suffix": self.contig_length_suffix,
+            "scale": "YlGn",
             "modify": lambda x: x * self.contig_length_multiplier,
         }
         headers["Total length"] = {
@@ -145,6 +188,7 @@ class MultiqcModule(BaseMultiqcModule):
             "scale": "YlGn",
             "modify": lambda x: x * self.total_length_multiplier,
         }
+
         self.general_stats_addcols(self.quast_data, headers)
 
     def quast_table(self):
