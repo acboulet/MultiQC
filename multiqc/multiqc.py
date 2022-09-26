@@ -1036,7 +1036,7 @@ def run(
                 config.output_fn,
                 "--output",
                 pdf_fn_name,
-                "--pdf-engine=xelatex",
+                "--latex-engine=xelatex",
                 "-V",
                 "documentclass=article",
                 "-V",
